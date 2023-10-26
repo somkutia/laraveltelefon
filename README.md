@@ -25,6 +25,13 @@ A `https://github.com/rcsnjszg/laravel-alap-2023` repository egy Laravel 10-es k
     cp .env-example .env
     ```
 
+    Az alábbi változók értékeét célszerű megvizsgálni, hogy megfeleljen az aktuális projektnek és ne ütközzön más portokkal.
+
+        - `WEB_HOST`:  A backend elérésének a címe
+        - `WEB_PORT`:  A backend portja
+        - `PMA_PORT`:  A phpMyAdmin eléhetőségének a portja
+        - `DB_NAME`: Az adatbázis neve.
+
 3. docker build
 
     A php-hoz tartozó image-t a `docker/php/Dockerfile` recept alapján elsőre fel kell építani. Ez a lépés az első indításkor fontos, ha nem találja meg a gépen, akkor megteszi magától is a konténeere indításakor. Ugyanakkor ha a fájl tartalma megváltozik, akkor nem fut le újra a build, hanem a korábban lebuildelt image-t használja.
