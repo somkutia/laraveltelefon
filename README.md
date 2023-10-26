@@ -1,66 +1,67 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel alap 2023
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Előkészületek
 
-## About Laravel
+A `https://github.com/rcsnjszg/laravel-alap-2023` repository egy Laravel 10-es keretrendszert tartalmaz, a fejlesztésehez szükséges docker környezettel integrálva.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. Új projekt létrehozása:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    ```bash
+    git clone https://github.com/rcsnjszg/laravel-alap-2023.git projekt_neve
+    ```
 
-## Learning Laravel
+    - A `projekt_neve` lesz a mappa neve, amibe klónozza a repo-t.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2. Környezeti változók beállítása:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    A Docker és a Laravel is a környezeti változókat használja a konfigurációhoz.
+    Ezeket az adatok a `.env` fájlban célszerű eltárolni.
+    Mivel az egyes példányok esetében eltérőek lehetnek, így a repository-ban nem lett eltárolva a fájl.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    Cserébe ott a `.env-example`, ami tartalmazza az általános beállításokat. Ebből kell egy másolatot létrehozni `.env` néven.
 
-## Laravel Sponsors
+    ```bash
+    cp .env-example .env
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    Az alábbi változók értékeét célszerű megvizsgálni, hogy megfeleljen az aktuális projektnek és ne ütközzön más portokkal.
 
-### Premium Partners
+        - `WEB_HOST`:  A backend elérésének a címe
+        - `WEB_PORT`:  A backend portja
+        - `PMA_PORT`:  A phpMyAdmin eléhetőségének a portja
+        - `DB_NAME`: Az adatbázis neve.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+3. docker build
 
-## Contributing
+    A php-hoz tartozó image-t a `docker/php/Dockerfile` recept alapján elsőre fel kell építani. Ez a lépés az első indításkor fontos, ha nem találja meg a gépen, akkor megteszi magától is a konténeere indításakor. Ugyanakkor ha a fájl tartalma megváltozik, akkor nem fut le újra a build, hanem a korábban lebuildelt image-t használja.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ```bash
+    docker compose build
+    ```
 
-## Code of Conduct
+4. docker compose up
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    ```bash
+    docker compose up -d
+    ```
 
-## Security Vulnerabilities
+    - A `-d` hatására detached módban indul, azaz a konténerek kimenete leválasztásra kerül a konzolról, így az továbbra is használható marad.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5.  composer
 
-## License
+    A `composer.lock` tartalmazza, hogy mik azok a tényleges, konkrét csomagok, amik szükségesek egy laravel projekthez.
+    Első futtatáskor még nem létezik a `vendor` mappa, hiszen szerepel a `.gitignore` fájlban. Ezért első futtatáskor, vagy
+    a `composer.lock` változása esetén (mert pl. új csomag került be a`composer.json` fájlba) szükséges a `composer install` futtatása a konténeren belül. A **docker compose** és a **composer** nem összekeverndő!
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    ```bash
+    docker compose exec app composer install
+    ```
+
+6. api key
+
+    A laravelnek szüksége van minden projekthez egy egyedi kulcsra. Amennyiben ez nem található meg a `.env` fájlban, úgy le kell generálni. Ez csak első futtatáskor szükséges.
+
+    ```bash
+    docker compose exec app:keygen
+    ```
