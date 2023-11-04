@@ -19,10 +19,10 @@ A `https://github.com/rcsnjszg/laravel-alap-2023` repository egy Laravel 10-es k
     Ezeket az adatok a `.env` fájlban célszerű eltárolni.
     Mivel az egyes példányok esetében eltérőek lehetnek, így a repository-ban nem lett eltárolva a fájl.
 
-    Cserébe ott a `.env-example`, ami tartalmazza az általános beállításokat. Ebből kell egy másolatot létrehozni `.env` néven.
+    Cserébe ott a `.env.example`, ami tartalmazza az általános beállításokat. Ebből kell egy másolatot létrehozni `.env` néven.
 
     ```bash
-    cp .env-example .env
+    cp .env.example .env
     ```
 
     Az alábbi változók értékeét célszerű megvizsgálni, hogy megfeleljen az aktuális projektnek és ne ütközzön más portokkal.
@@ -60,8 +60,8 @@ A `https://github.com/rcsnjszg/laravel-alap-2023` repository egy Laravel 10-es k
 
 6. api key
 
-    A laravelnek szüksége van minden projekthez egy egyedi kulcsra. Amennyiben ez nem található meg a `.env` fájlban, úgy le kell generálni. Ez csak első futtatáskor szükséges.
+    A laravelnek szüksége van minden projekthez egy egyedi kulcsra. Amennyiben ez nem található meg a `.env` fájlban, úgy le kell generálni. **Ez csak első futtatáskor szükséges, ha még nem lett beállítva az APP_KEY**
 
     ```bash
-    docker compose exec app:keygen
+    docker compose exec app php artisan key:generate
     ```
